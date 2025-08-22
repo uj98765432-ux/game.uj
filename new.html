@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinGo Pakistan - Predict Colors & Win Big</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .user-info i {
+            margin-right: 8px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #b21f1f;
+            border-bottom: 3px solid #b21f1f;
+        }
+        
+        .form-container {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .input-with-icon input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .input-with-icon input:focus {
+            border-color: #b21f1f;
+            outline: none;
+        }
+        
+        .phone-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #b21f1f, #1a2a6c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(178, 31, 31, 0.3);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .form-footer a {
+            color: #b21f1f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+        
+        /* Game Section Styles */
+        .game-section {
+            display: none;
+            padding: 25px;
+        }
+        
+        /* Game-specific styles */
+        .game-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .balance-card {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .current-round {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .round-id {
+            font-size: 0.9rem;
+            color: #bdc3c7;
+            margin-bottom: 10px;
+        }
+        
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f39c12;
+            margin: 10px 0;
+        }
+        
+        .betting-status {
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .status-open {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .status-closed {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+        
+        .betting-interface {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .betting-interface h2 {
+            color: #f39c12;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .input-group input {
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            background: #fff;
+            color: #333;
+        }
+        
+        .bet-options {
+            margin-bottom: 20px;
+        }
+        
+        .options-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .bet-option {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+            min-width: 120px;
+            transition: all 0.2s ease;
+            text-align: center;
+            color: white;
+        }
+        
+        .bet-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .bet-option.green {
+            background: linear-gradient(to bottom, #27ae60, #219653);
+        }
+        
+        .bet-option.violet {
+            background: linear-gradient(to bottom, #8e44ad, #6c3483);
+        }
+        
+        .bet-option.red {
+            background: linear-gradient(to bottom, #c0392b, #922b21);
+        }
+        
+        .bet-option.big {
+            background: linear-gradient(to bottom, #2980b9, #1f618d);
+        }
+        
+        .bet-option.small {
+            background: linear-gradient(to bottom, #f39c12, #d35400);
+        }
+        
+        .bet-option.selected {
+            border: 3px solid white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        
+        .result-display {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .winning-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            color: #333;
+        }
+        
+        .winning-color {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            color: white;
+        }
+        
+        .message-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .message-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            display: block;
+        }
+        
+        .message-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+            display: block;
+        }
+        
+        .game-history {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .history-table th, .history-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        
+        .history-table th {
+            background-color: rgba(52, 73, 94, 0.1);
+            font-weight: bold;
+        }
+        
+        .history-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .logout-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .options-row {
+                flex-direction: column;
+            }
+            
+            .game-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .form-container, .game-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login/Create Account Section -->
+        <div id="auth-section">
+            <div class="header">
+                <h1>WinGo Pakistan</h1>
+                <p>Predict colors and win big!</p>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" id="login-tab">Login</div>
+                <div class="tab" id="create-tab">Create Account</div>
+            </div>
+            
+            <div class="form-container">
+                <!-- Login Form -->
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-phone">Pakistani Phone Number</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="login-phone" placeholder="+92 3XX-XXXXXXX" required>
+                        </div>
+                        <p class="phone-note">Please enter a valid Pakistani phone number (e.g., 3XX-XXXXXXX)</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password" required>
+                            <span class="password-toggle" id="login-toggle">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">Login</button>
+                    
+                    <div class="form-footer">
+                        Don't have an account? <a href="#" id="go-to-create">Create Account</a>
+                    </div>
+                </form>
+                
+                <!-- Create Account Form -->
+                <form id="create-form" class="hidden">
+                    <div class="form-group">
+                        <label for="create-username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="create-username" placeholder="Enter username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="create-phone">Pakistani Phone Number</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="create-phone" placeholder="+92 3XX-XXXXXXX" required>
+                        </div>
+                        <p class="phone-note">Please enter a valid Pakistani phone number (e.g., 3XX-XXXXXXX)</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="create-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="create-password" placeholder="Create a password" required>
+                            <span class="password-toggle" id="create-password-toggle">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                            <span class="password-toggle" id="confirm-password-toggle">
+                                <i class="far fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">Create Account</button>
+                    
+                    <div class="form-footer">
+                        Already have an account? <a href="#" id="go-to-login">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Game Section (Initially Hidden) -->
+        <div id="game-section" class="game-section">
+            <div class="header">
+                <h1>WinGo Pakistan</h1>
+                <p>Predict colors and win big!</p>
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span id="display-username">Username</span>
+                </div>
+            </div>
+            
+            <div class="current-round">
+                <div class="round-id">Round: <span id="userRoundId">R182736</span></div>
+                <div class="timer"><span id="userTimer">60</span>s</div>
+                <div class="betting-status status-open" id="userBettingStatus">BETTING OPEN</div>
+            </div>
+            
+            <div class="balance-card">
+                <p>Your Balance</p>
+                <div class="balance-amount">₨ <span id="userBalance">1000.00</span></div>
+                <p>Play responsibly</p>
+            </div>
+            
+            <div class="betting-interface">
+                <h2>Place Your Bet</h2>
+                
+                <div class="input-group">
+                    <label for="betAmount">Bet Amount: ₨</label>
+                    <input type="number" id="betAmount" value="10" min="1" max="1000">
+                </div>
+                
+                <div class="bet-options">
+                    <h3>Colors (Multipliers)</h3>
+                    <div class="options-row">
+                        <button class="bet-option green" data-type="color" data-value="green" data-multiplier="2">Green (x2)</button>
+                        <button class="bet-option violet" data-type="color" data-value="violet" data-multiplier="3">Violet (x3)</button>
+                        <button class="bet-option red" data-type="color" data-value="red" data-multiplier="5">Red (x5)</button>
+                    </div>
+                    
+                    <h3>Big/Small (x2)</h3>
+                    <div class="options-row">
+                        <button class="bet-option big" data-type="size" data-value="big" data-multiplier="2">Big (x2)</button>
+                        <button class="bet-option small" data-type="size" data-value="small" data-multiplier="2">Small (x2)</button>
+                    </div>
+                </div>
+                
+                <button id="placeBetBtn" class="btn">Place Bet</button>
+                <div class="message-box" id="messageBox"></div>
+            </div>
+            
+            <div class="result-display">
+                <h2>Last Result</h2>
+                <div class="winning-number" id="userWinningNumber">--</div>
+                <div class="winning-color" id="userWinningColor">--</div>
+            </div>
+            
+            <div class="game-history">
+                <h2>Game History</h2>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Round</th>
+                            <th>Number</th>
+                            <th>Color</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr><td colspan="4">No history yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Game configuration
+        const MULTIPLIERS = {
+            'green': 2,
+            'violet': 3,
+            'red': 5,
+            'big': 2,
+            'small': 2
+        };
+        
+        const COLOR_NAMES = {
+            'green': 'GREEN',
+            'violet': 'VIOLET', 
+            'red': 'RED'
+        };
+        
+        const COLOR_MAPPING = {
+            0: 'green', 1: 'green', 2: 'green', 3: 'green', 4: 'green',
+            5: 'violet', 6: 'violet', 7: 'violet',
+            8: 'red', 9: 'red'
+        };
+
+        // User state
+        let userBalance = 1000;
+        let currentSelectedBet = null;
+        let gameHistory = [];
+        let checkInterval = null;
+        let currentUser = null;
+
+        // DOM elements
+        const loginTab = document.getElementById('login-tab');
+        const createTab = document.getElementById('create-tab');
+        const loginForm = document.getElementById('login-form');
+        const createForm = document.getElementById('create-form');
+        const goToCreate = document.getElementById('go-to-create');
+        const goToLogin = document.getElementById('go-to-login');
+        const authSection = document.getElementById('auth-section');
+        const gameSection = document.getElementById('game-section');
+        const displayUsername = document.getElementById('display-username');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        // Game elements
+        const userTimerEl = document.getElementById('userTimer');
+        const userRoundIdEl = document.getElementById('userRoundId');
+        const userBettingStatusEl = document.getElementById('userBettingStatus');
+        const userBalanceEl = document.getElementById('userBalance');
+        const userWinningNumberEl = document.getElementById('userWinningNumber');
+        const userWinningColorEl = document.getElementById('userWinningColor');
+        const messageBoxEl = document.getElementById('messageBox');
+        const placeBetBtn = document.getElementById('placeBetBtn');
+        const betAmountEl = document.getElementById('betAmount');
+        const historyTableBody = document.getElementById('historyTableBody');
+
+        // Toggle between login and create account forms
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            createTab.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            createForm.classList.add('hidden');
+        });
+        
+        createTab.addEventListener('click', () => {
+            createTab.classList.add('active');
+            loginTab.classList.remove('active');
+            createForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+        
+        goToCreate.addEventListener('click', (e) => {
+            e.preventDefault();
+            createTab.click();
+        });
+        
+        goToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginTab.click();
+        });
+        
+        // Password toggle functionality
+        function setupPasswordToggle(passwordId, toggleId) {
+            const passwordInput = document.getElementById(passwordId);
+            const toggleButton = document.getElementById(toggleId);
+            
+            toggleButton.addEventListener('click', () => {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleButton.innerHTML = '<i class="far fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    toggleButton.innerHTML = '<i class="far fa-eye"></i>';
+                }
+            });
+        }
+        
+        setupPasswordToggle('login-password', 'login-toggle');
+        setupPasswordToggle('create-password', 'create-password-toggle');
+        setupPasswordToggle('confirm-password', 'confirm-password-toggle');
+        
+        // Form validation and submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Basic validation
+            if (!isValidPakistaniNumber(phone)) {
+                showMessage('Please enter a valid Pakistani phone number (e.g., 3XX-XXXXXXX)', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters long', 'error');
+                return;
+            }
+            
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('wingoUsers') || '[]');
+            const user = users.find(u => u.phone === phone && u.password === password);
+            
+            if (user) {
+                // Successful login
+                currentUser = user;
+                redirectToGame(user.username);
+                saveUserData();
+            } else {
+                showMessage('Invalid phone number or password', 'error');
+            }
+        });
+        
+        createForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('create-username').value;
+            const phone = document.getElementById('create-phone').value;
+            const password = document.getElementById('create-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Basic validation
+            if (username.length < 3) {
+                showMessage('Username must be at least 3 characters long', 'error');
+                return;
+            }
+            
+            if (!isValidPakistaniNumber(phone)) {
+                showMessage('Please enter a valid Pakistani phone number (e.g., 3XX-XXXXXXX)', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters long', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+            
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('wingoUsers') || '[]');
+            if (users.some(u => u.phone === phone)) {
+                showMessage('An account with this phone number already exists', 'error');
+                return;
+            }
+            
+            if (users.some(u => u.username === username)) {
+                showMessage('Username already taken', 'error');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                username,
+                phone,
+                password,
+                balance: 1000,
+                joined: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('wingoUsers', JSON.stringify(users));
+            
+            // Set as current user
+            currentUser = newUser;
+            
+            // Redirect to game
+            redirectToGame(username);
+            showMessage('Account created successfully!', 'success');
+            
+            // Clear the form
+            document.getElementById('create-username').value = '';
+            document.getElementById('create-phone').value = '';
+            document.getElementById('create-password').value = '';
+            document.getElementById('confirm-password').value = '';
+        });
+        
+        // Pakistani phone number validation
+        function isValidPakistaniNumber(phone) {
+            // Remove any non-digit characters except the + at the beginning
+            const cleaned = phone.replace(/(?!^\+)\D/g, '');
+            
+            // Check if it matches Pakistani mobile number patterns
+            return /^(\+92|92|0)?3\d{9}$/.test(cleaned);
+        }
+        
+        // Redirect to game page
+        function redirectToGame(username) {
+            // Hide auth section and show game section
+            authSection.style.display = 'none';
+            gameSection.style.display = 'block';
+            
+            // Set the username in the game section
+            displayUsername.textContent = username;
+            
+            // Initialize the game
+            initGame();
+        }
+        
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            // Save user data before logout
+            saveUserData();
+            
+            // Show auth section and hide game section
+            authSection.style.display = 'block';
+            gameSection.style.display = 'none';
+            
+            // Reset forms
+            loginForm.reset();
+            createForm.reset();
+            
+            // Switch to login tab
+            loginTab.click();
+            
+            // Clear current user
+            currentUser = null;
+            
+            // Clean up interval
+            if (checkInterval) {
+                clearInterval(checkInterval);
+            }
+        });
+        
+        // Show message
+        function showMessage(message, type) {
+            messageBoxEl.textContent = message;
+            messageBoxEl.className = `message-box message-${type}`;
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                messageBoxEl.textContent = '';
+                messageBoxEl.className = 'message-box';
+            }, 3000);
+        }
+        
+        // Save user data to localStorage
+        function saveUserData() {
+            if (!currentUser) return;
+            
+            // Update users data
+            const users = JSON.parse(localStorage.getItem('wingoUsers') || '[]');
+            const userIndex = users.findIndex(u => u.phone === currentUser.phone);
+            
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('wingoUsers', JSON.stringify(users));
+            }
+        }
+        
+        // Initialize the game
+        function initGame() {
+            if (!currentUser) return;
+            
+            // Set user balance
+            userBalance = currentUser.balance;
+            userBalanceEl.textContent = userBalance.toFixed(2);
+            
+            // Set up event listeners
+            document.querySelectorAll('.bet-option').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove selection from previous bet
+                    if (currentSelectedBet) {
+                        currentSelectedBet.classList.remove('selected');
+                    }
+                    
+                    // Select new bet
+                    this.classList.add('selected');
+                    currentSelectedBet = this;
+                });
+            });
+
+            placeBetBtn.addEventListener('click', placeBet);
+            
+            // Check for game state updates
+            checkInterval = setInterval(checkForUpdates, 1000);
+            
+            // Load initial state
+            checkForUpdates();
+        }
+
+        // Check for updates from admin panel
+        function checkForUpdates() {
+            // Check for game state
+            const gameState = localStorage.getItem('colorPredictionGameState');
+            if (gameState) {
+                try {
+                    const state = JSON.parse(gameState);
+                    if (state && state.roundId) {
+                        userRoundIdEl.textContent = state.roundId;
+                        userTimerEl.textContent = state.timer;
+                        
+                        if (state.isBettingActive) {
+                            userBettingStatusEl.textContent = 'BETTING OPEN';
+                            userBettingStatusEl.className = 'betting-status status-open';
+                            placeBetBtn.disabled = false;
+                        } else {
+                            userBettingStatusEl.textContent = 'BETTING CLOSED';
+                            userBettingStatusEl.className = 'betting-status status-closed';
+                            placeBetBtn.disabled = true;
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing game state:", e);
+                }
+            }
+            
+            // Check for results
+            const gameData = localStorage.getItem('colorPredictionGame');
+            if (gameData) {
+                try {
+                    const data = JSON.parse(gameData);
+                    if (data.history && data.history.length > 0) {
+                        const latestResult = data.history[0];
+                        userWinningNumberEl.textContent = latestResult.number;
+                        userWinningColorEl.textContent = COLOR_NAMES[latestResult.color];
+                        userWinningColorEl.style.backgroundColor = latestResult.color;
+                        
+                        // Update history if needed
+                        if (JSON.stringify(data.history) !== JSON.stringify(gameHistory)) {
+                            gameHistory = data.history;
+                            updateHistoryTable();
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing game data:", e);
+                }
+            }
+        }
+
+        // Place a bet
+        function placeBet() {
+            if (!currentSelectedBet) {
+                showMessage('Please select a bet option first.', 'error');
+                return;
+            }
+            
+            const amount = parseFloat(betAmountEl.value);
+            if (isNaN(amount) || amount <= 0) {
+                showMessage('Please enter a valid bet amount.', 'error');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showMessage('You do not have enough balance.', 'error');
+                return;
+            }
+            
+            // Get current bets or initialize empty array
+            let currentBets = [];
+            const betsData = localStorage.getItem('colorPredictionBets');
+            if (betsData) {
+                try {
+                    currentBets = JSON.parse(betsData);
+                } catch (e) {
+                    console.error("Error parsing bets data:", e);
+                    currentBets = [];
+                }
+            }
+            
+            // Add new bet
+            const betType = currentSelectedBet.dataset.type;
+            const betValue = currentSelectedBet.dataset.value;
+            
+            currentBets.push({
+                user: currentUser.username,
+                type: betType,
+                value: betValue,
+                amount: amount,
+                round: userRoundIdEl.textContent
+            });
+            
+            // Save bets to localStorage
+            localStorage.setItem('colorPredictionBets', JSON.stringify(currentBets));
+            
+            // Deduct bet amount from balance
+            userBalance -= amount;
+            currentUser.balance = userBalance;
+            userBalanceEl.textContent = userBalance.toFixed(2);
+            
+            showMessage(`Bet placed: ₨${amount} on ${betValue.toUpperCase()}`, 'success');
+            
+            // Clear selection
+            currentSelectedBet.classList.remove('selected');
+            currentSelectedBet = null;
+            
+            // Save user data
+            saveUserData();
+        }
+
+        // Update history table
+        function updateHistoryTable() {
+            historyTableBody.innerHTML = '';
+            
+            if (gameHistory.length === 0) {
+                historyTableBody.innerHTML = '<tr><td colspan="4">No history yet</td></tr>';
+                return;
+            }
+            
+            // Show only the last 10 results
+            const recentHistory = gameHistory.slice(0, 10);
+            
+            recentHistory.forEach(round => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${round.roundId}</td>
+                    <td>${round.number}</td>
+                    <td style="color: ${round.color}; font-weight: bold;">${COLOR_NAMES[round.color]}</td>
+                    <td>${round.number < 5 ? 'SMALL' : 'BIG'}</td>
+                `;
+                
+                historyTableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
